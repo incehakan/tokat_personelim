@@ -1,0 +1,2 @@
+Kullanıcı önce [PdksConfirmationScreen]'e gidiyor. Eğer daha önce 
+muvafakkatnameyi okuyup onaylamadıysa karşısına muvafakkatname çıkıyor ve bunu onayladıktan sonra [EntranceOperationsScreen]'e gidiyor. 

@@ -1,0 +1,2 @@
+/Users/mertyavuz/Desktop/projects/e_revizyon/karabaglar_personelim-main/android/app/.cxx/RelWithDebInfo/2c5p241o/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/mertyavuz/Desktop/projects/e_revizyon/karabaglar_personelim-main/android/app/.cxx/RelWithDebInfo/2c5p241o/armeabi-v7a/CMakeFiles/rebuild_cache.dir

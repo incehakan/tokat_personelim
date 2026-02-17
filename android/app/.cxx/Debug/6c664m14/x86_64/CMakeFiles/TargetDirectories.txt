@@ -1,0 +1,2 @@
+/Users/mertyavuz/Desktop/projects/e_revizyon/karabaglar_personelim-main/android/app/.cxx/Debug/6c664m14/x86_64/CMakeFiles/edit_cache.dir
+/Users/mertyavuz/Desktop/projects/e_revizyon/karabaglar_personelim-main/android/app/.cxx/Debug/6c664m14/x86_64/CMakeFiles/rebuild_cache.dir

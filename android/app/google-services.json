@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "102540313442",
+    "project_id": "karabaglarpersonelim",
+    "storage_bucket": "karabaglarpersonelim.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:102540313442:android:de33cc344f625a284ba23b",
+        "android_client_info": {
+          "package_name": "com.karabaglar.karabaglarpersonelim"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "102540313442-gh0bjk0e7lbvf1lsae7ifhveoe5nbpvv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYL1TtPbA7a7-EWoqNng2NEmrDDsy_Sec"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "102540313442-gh0bjk0e7lbvf1lsae7ifhveoe5nbpvv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

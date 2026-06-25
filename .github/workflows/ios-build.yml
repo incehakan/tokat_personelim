@@ -1,0 +1,97 @@
+name: iOS Release Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'lib/**'
+      - 'ios/**'
+      - 'pubspec.yaml'
+      - 'pubspec.lock'
+
+jobs:
+  build-ios:
+    runs-on: macos-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Flutter kur
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.38.5'
+          channel: stable
+          cache: true
+
+      - name: Versiyon bilgisi
+        id: version
+        run: |
+          VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}')
+          echo "name=${VERSION%%+*}" >> $GITHUB_OUTPUT
+          echo "code=${VERSION##*+}" >> $GITHUB_OUTPUT
+
+      - name: Flutter pub get
+        run: flutter pub get
+
+      - name: CocoaPods
+        run: |
+          cd ios
+          pod install
+          cd ..
+
+      # Asagidaki 3 secret GitHub repo ayarlarinda tanimlanmali:
+      # BUILD_CERTIFICATE_BASE64  - .p12 dosyasinin base64 hali
+      # P12_PASSWORD              - sertifika sifresi
+      # BUILD_PROVISION_PROFILE_BASE64 - .mobileprovision base64
+      # KEYCHAIN_PASSWORD         - gecici keychain sifresi (herhangi bir guclu sifre)
+
+      - name: iOS imzalama sertifikalari
+        if: ${{ secrets.BUILD_CERTIFICATE_BASE64 != '' }}
+        env:
+          BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
+          P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
+          BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+        run: |
+          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+          PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+
+          echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o $CERTIFICATE_PATH
+          echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode -o $PP_PATH
+
+          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security set-key-partition-list -S apple-tool:,apple: -s -k "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security list-keychain -d user -s $KEYCHAIN_PATH
+
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles/
+
+      - name: IPA derle
+        run: |
+          flutter build ipa \
+            --release \
+            --build-name=${{ steps.version.outputs.name }} \
+            --build-number=${{ steps.version.outputs.code }} \
+            --export-options-plist=ios/ExportOptions.plist
+
+      - name: release klasorune kopyala
+        run: |
+          mkdir -p release
+          IPA=$(find build/ios/ipa -name "*.ipa" | head -n 1)
+          cp "$IPA" "release/TokatPersonelim-v${{ steps.version.outputs.name }}-appstore.ipa"
+
+      - name: IPA yukle (artifact)
+        uses: actions/upload-artifact@v4
+        with:
+          name: TokatPersonelim-iOS-v${{ steps.version.outputs.name }}
+          path: |
+            build/ios/ipa/*.ipa
+            release/*.ipa
+          retention-days: 30

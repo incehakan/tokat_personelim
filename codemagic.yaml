@@ -1,0 +1,67 @@
+workflows:
+  tokat-personelim-ios:
+    name: Tokat Personelim iOS
+    max_build_duration: 90
+    instance_type: mac_mini_m2
+
+    environment:
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+      vars:
+        BUNDLE_ID: com.tokat.tokatpersonelim
+      # Codemagic web arayuzunde ayarlanacak:
+      # Team settings -> Developer Portal -> App Store Connect API key
+      # veya Code signing identities -> iOS certificates + provisioning profiles
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.tokat.tokatpersonelim
+
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: main
+          include: true
+
+    scripts:
+      - name: Flutter paketleri
+        script: flutter pub get
+
+      - name: CocoaPods
+        script: |
+          cd ios
+          pod install
+          cd ..
+
+      - name: IPA derle
+        script: |
+          VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}')
+          VERSION_NAME="${VERSION%%+*}"
+          VERSION_CODE="${VERSION##*+}"
+          flutter build ipa \
+            --release \
+            --build-name="$VERSION_NAME" \
+            --build-number="$VERSION_CODE" \
+            --export-options-plist=ios/ExportOptions.plist
+
+      - name: release klasorune kopyala
+        script: |
+          VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}')
+          VERSION_NAME="${VERSION%%+*}"
+          mkdir -p release
+          IPA=$(find build/ios/ipa -name "*.ipa" | head -n 1)
+          cp "$IPA" "release/TokatPersonelim-v${VERSION_NAME}-appstore.ipa"
+          echo "IPA: release/TokatPersonelim-v${VERSION_NAME}-appstore.ipa"
+
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - release/*.ipa
+
+    publishing:
+      email:
+        recipients:
+          - incehakan@gmail.com
+        notify:
+          success: true
+          failure: true

@@ -1,0 +1,36 @@
+TOKAT PERSONELİM — iOS KURUM TESLİM PAKETİ
+==========================================
+
+Bu paket KAYNAK KOD İÇERMEZ.
+Kurum aşağıdaki imzasız IPA dosyasını kendi Apple Developer
+hesabı ile imzalayıp App Store'a yükleyecektir.
+
+TESLİM EDİLEN DOSYA
+-------------------
+TokatPersonelim-v1.3.4-unsigned.ipa
+
+KURUMUN YAPMASI GEREKENLER
+--------------------------
+1. Apple Developer Program üyeliği
+2. Distribution sertifikası + App Store provisioning profile
+3. IPA imzalama (fastlane veya iResign)
+4. Transporter ile App Store Connect'e yükleme
+5. Mağaza listesi + gizlilik politikası + incelemeye gönderme
+
+DETAYLI KILAVUZ
+---------------
+docs/KURUM_IOS_IMZALAMA.md dosyasına bakın.
+
+SÜRÜM NOTLARI
+-------------
+SURUM_NOTLARI_v1.3.4.txt
+
+GÜNCELLEME
+----------
+Her yeni sürümde geliştirici yeni *-unsigned.ipa teslim eder.
+Kurum aynı imzalama adımlarını tekrarlar.
+
+BUNDLE ID
+---------
+Önerilen: com.tokat.tokatpersonelim
+(Kurum kendi App ID'sini kullanabilir; imzalama sırasında ayarlanır)

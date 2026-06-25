@@ -1,18 +1,44 @@
 # Kurum teslim paketi — Tokat Personelim v1.3.4
 
+> **Geliştirici imzalama yapmaz (iOS).** Kurum kendi Apple Developer hesabı ile
+> kaynak koddan derleyip App Store'a yükler. Detay: `docs/KURUM_TESLIM_REHBERI.md`
+
+## Tek ZIP ile teslim
+
+```powershell
+.\scripts\create_delivery_package.ps1
+```
+
+Çıktı: `release/TokatPersonelim-v1.3.4-teslim-paketi.zip`
+
 ## Teslim edilecek dosyalar
 
-1. **`release/TokatPersonelim-v1.3.4-release.apk`** — Personel cihazlarına doğrudan kurulum
-2. **`release/TokatPersonelim-v1.3.4-playstore.aab`** — Google Play Console yükleme
-3. **`release/TokatPersonelim-v1.3.4-appstore.ipa`** — App Store yükleme (Mac'te derlenir)
-4. **`release/SURUM_NOTLARI_v1.3.4.txt`** — Sürüm değişiklikleri
-5. **`release/PLAY_STORE_YUKLEME.txt`** — Play Console yükleme kılavuzu
-6. **`release/APP_STORE_YUKLEME.txt`** — App Store yükleme kılavuzu
-7. **`release/SHA_FINGERPRINTS.txt`** — Firebase / Maps SHA parmak izleri
-8. **`android/app/upload-keystore.jks`** — Play güncellemeleri için imza dosyası (**gizli**, yedek zorunlu)
-9. **`docs/YAYINLAMA_KILAVUZU.md`** — Ana yayınlama kılavuzu
-10. **`docs/GOOGLE_PLAY_YAYINLAMA.md`** — Play Store detay rehberi
-11. **`docs/APP_STORE_YAYINLAMA.md`** — App Store detay rehberi
+### Android (hazır, imzalı)
+
+1. **`release/TokatPersonelim-v1.3.4-release.apk`** — Kurum içi kurulum
+2. **`release/TokatPersonelim-v1.3.4-playstore.aab`** — Google Play yükleme
+3. **`release/SHA_FINGERPRINTS.txt`** — Firebase / Maps
+
+### iOS (kaynak kod — kurum imzalar)
+
+4. **GitHub kaynak kodu** — `https://github.com/incehakan/tokat_personelim`
+5. **`docs/APP_STORE_YAYINLAMA.md`** — Kurumun Mac'te izleyeceği rehber
+6. **`release/APP_STORE_YUKLEME.txt`** — Özet kılavuz
+
+> `.ipa` dosyası geliştirici tarafından teslim edilmez; kurum Xcode ile üretir.
+
+### Dokümantasyon
+
+7. **`release/SURUM_NOTLARI_v1.3.4.txt`**
+8. **`release/PLAY_STORE_YUKLEME.txt`**
+9. **`release/KURUM_TESLIM_LISTESI.txt`**
+10. **`docs/KURUM_TESLIM_REHBERI.md`**
+11. **`docs/YAYINLAMA_KILAVUZU.md`**
+
+### Gizli (ayrı güvenli kanal)
+
+12. **`android/app/upload-keystore.jks`**
+13. **`android/key.properties`**
 
 ## Upload keystore şifre bilgisi
 

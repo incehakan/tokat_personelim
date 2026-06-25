@@ -1,4 +1,58 @@
 workflows:
+  # Imzasiz IPA — gelistirici Apple hesabi GEREKMEZ, kaynak kod teslim edilmez.
+  # Kurum bu IPA'yi kendi sertifikasi ile imzalayıp App Store'a yukler.
+  tokat-personelim-ios-unsigned:
+    name: Tokat Personelim iOS (Imzasiz)
+    max_build_duration: 90
+    instance_type: mac_mini_m2
+
+    environment:
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+      vars:
+        BUNDLE_ID: com.tokat.tokatpersonelim
+
+    scripts:
+      - name: Flutter paketleri
+        script: flutter pub get
+
+      - name: CocoaPods
+        script: |
+          cd ios
+          pod install
+          cd ..
+
+      - name: Imzasiz iOS derle
+        script: |
+          VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}')
+          VERSION_NAME="${VERSION%%+*}"
+          VERSION_CODE="${VERSION##*+}"
+          flutter build ios --release --no-codesign \
+            --build-name="$VERSION_NAME" \
+            --build-number="$VERSION_CODE"
+
+      - name: Imzasiz IPA paketle
+        script: |
+          VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}')
+          VERSION_NAME="${VERSION%%+*}"
+          mkdir -p Payload release
+          cp -r build/ios/iphoneos/Runner.app Payload/
+          zip -qr "release/TokatPersonelim-v${VERSION_NAME}-unsigned.ipa" Payload
+          rm -rf Payload
+          echo "Imzasiz IPA: release/TokatPersonelim-v${VERSION_NAME}-unsigned.ipa"
+
+    artifacts:
+      - release/*-unsigned.ipa
+
+    publishing:
+      email:
+        recipients:
+          - incehakan@gmail.com
+        notify:
+          success: true
+          failure: true
+
   tokat-personelim-ios:
     name: Tokat Personelim iOS
     max_build_duration: 90

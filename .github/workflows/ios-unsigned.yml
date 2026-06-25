@@ -1,0 +1,58 @@
+name: iOS Unsigned IPA
+
+# Manuel tetikleme — Apple hesabi veya Codemagic GEREKMEZ
+on:
+  workflow_dispatch:
+
+jobs:
+  build-unsigned-ipa:
+    runs-on: macos-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Flutter kur
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.38.5'
+          channel: stable
+          cache: true
+
+      - name: Versiyon
+        id: version
+        run: |
+          VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}')
+          echo "name=${VERSION%%+*}" >> $GITHUB_OUTPUT
+          echo "code=${VERSION##*+}" >> $GITHUB_OUTPUT
+
+      - name: Flutter pub get
+        run: flutter pub get
+
+      - name: CocoaPods
+        run: |
+          cd ios
+          pod install
+          cd ..
+
+      - name: Imzasiz iOS derle
+        run: |
+          flutter build ios --release --no-codesign \
+            --build-name=${{ steps.version.outputs.name }} \
+            --build-number=${{ steps.version.outputs.code }}
+
+      - name: Imzasiz IPA paketle
+        run: |
+          mkdir -p Payload release
+          cp -r build/ios/iphoneos/Runner.app Payload/
+          zip -qr "release/TokatPersonelim-v${{ steps.version.outputs.name }}-unsigned.ipa" Payload
+          rm -rf Payload
+          ls -la release/
+
+      - name: IPA yukle
+        uses: actions/upload-artifact@v4
+        with:
+          name: TokatPersonelim-iOS-unsigned-v${{ steps.version.outputs.name }}
+          path: release/*-unsigned.ipa
+          retention-days: 30

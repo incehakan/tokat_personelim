@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.izmirbb" "\0"
-            VALUE "FileDescription", "karabaglarpersonelim" "\0"
+            VALUE "CompanyName", "com.tokat" "\0"
+            VALUE "FileDescription", "tokatpersonelim" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "karabaglarpersonelim" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2023 com.izmirbb. All rights reserved." "\0"
-            VALUE "OriginalFilename", "karabaglarpersonelim.exe" "\0"
-            VALUE "ProductName", "karabaglarpersonelim" "\0"
+            VALUE "InternalName", "tokatpersonelim" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2026 Tokat Belediyesi. All rights reserved." "\0"
+            VALUE "OriginalFilename", "tokatpersonelim.exe" "\0"
+            VALUE "ProductName", "tokatpersonelim" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

@@ -1,0 +1,26 @@
+Tokat Personelim — Sürüm 1.3.3 (Build 4)
+Tarih: 10.06.2026
+
+YENİ ÖZELLİKLER
+- Bordro ekranına paylaşım seçeneği eklendi
+  * WhatsApp ile paylaşma
+  * E-posta ile paylaşma
+  * Telefona PDF olarak kaydetme
+
+DÜZELTMELER
+- Maaş Bilgilerim ekranında Brüt Maaş, Net Maaş ve Kesintiler alanlarında
+  "null TL" görünme sorunu giderildi
+
+TEKNİK BİLGİ
+- Paket adı: com.tokat.tokatpersonelim
+- versionName: 1.3.3
+- versionCode: 4
+
+KURULUM (APK)
+1. APK dosyasını cihaza aktarın
+2. Ayarlar → Güvenlik → Bilinmeyen kaynaklardan uygulama yüklemeye izin verin
+3. APK dosyasını açıp kurun
+
+PLAY STORE
+- Play Console'a yüklemek için .aab dosyasını kullanın
+- Detaylı adımlar: docs/GOOGLE_PLAY_YAYINLAMA.md

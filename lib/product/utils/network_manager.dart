@@ -2,9 +2,11 @@ import 'package:dio/dio.dart';
 
 import '../../features/data/repository/cache_repository.dart';
 import '../../features/data/repository/token_repository.dart';
+import '../config/app_env.dart';
 import '../constants/endpoints.dart';
 import '../router/app_router.dart';
 import '../router/app_routes.dart';
+import 'mock_api.dart';
 
 class NetworkManager {
   final Dio dio;
@@ -33,18 +35,29 @@ class NetworkManager {
               final username = CacheRepository.getUsername();
               final password = CacheRepository.getPassword();
 
-              try {
-                final accessToken = await tokenRepository.login(username, password);
-                e.requestOptions.headers['Authorization'] = 'Bearer $accessToken';
-
-                return handler.resolve(
-                  await dio.fetch(
-                    e.requestOptions,
-                  ),
-                );
-              } catch (e) {
+              if (username == null || password == null) {
                 appRouter.pushReplacementNamed(AppRoutes.login);
+                return handler.next(e);
               }
+
+              final refreshResult = await tokenRepository.login(username, password);
+              return refreshResult.fold(
+                (_) async {
+                  appRouter.pushReplacementNamed(AppRoutes.login);
+                  return handler.next(e);
+                },
+                (_) async {
+                  final token = CacheRepository.getAccessToken();
+                  if (token != null) {
+                    e.requestOptions.headers['Authorization'] = 'Bearer $token';
+                    return handler.resolve(
+                      await dio.fetch(e.requestOptions),
+                    );
+                  }
+                  appRouter.pushReplacementNamed(AppRoutes.login);
+                  return handler.next(e);
+                },
+              );
             }
             return handler.next(e);
           },
@@ -61,6 +74,12 @@ class NetworkManager {
   }
 
   Future<Response> get(String path, {Map<String, dynamic>? queryParameters}) async {
+    if (AppEnv.useMock) {
+      final mockResponse = MockApi.mockGet(path, queryParameters: queryParameters);
+      if (mockResponse != null) {
+        return mockResponse;
+      }
+    }
     try {
       final Response<dynamic> response = await dio.get(
         path,
@@ -76,6 +95,12 @@ class NetworkManager {
     String path, {
     Map<String, dynamic>? data,
   }) async {
+    if (AppEnv.useMock) {
+      final mockResponse = MockApi.mockPost(path, data: data);
+      if (mockResponse != null) {
+        return mockResponse;
+      }
+    }
     try {
       final Response<dynamic> response = await dio.post(
         path,

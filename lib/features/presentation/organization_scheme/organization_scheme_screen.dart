@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
-import '../../../product/constants/app_strings.dart';
-import '../../../product/constants/endpoints.dart';
-import '../../data/repository/cache_repository.dart';
+import '../../widgets/custom_error_text.dart';
 import '../../widgets/loading_indicator.dart';
 
+/// Tokat Belediyesi organizasyon şeması:
+/// https://tokat.bel.tr/organizasyon-semasi
 class OrganizationSchemeScreen extends StatefulWidget {
   const OrganizationSchemeScreen({Key? key}) : super(key: key);
 
@@ -14,37 +14,80 @@ class OrganizationSchemeScreen extends StatefulWidget {
 }
 
 class _OrganizationSchemeScreenState extends State<OrganizationSchemeScreen> {
+  static const String _organizationSchemeUrl =
+      'https://tokat.bel.tr/organizasyon-semasi';
+
+  late final WebViewController _controller;
+  bool _isLoading = true;
+  String? _errorMessage;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onPageStarted: (_) {
+            if (!mounted) return;
+            setState(() {
+              _isLoading = true;
+              _errorMessage = null;
+            });
+          },
+          onPageFinished: (_) {
+            if (!mounted) return;
+            setState(() {
+              _isLoading = false;
+              _errorMessage = null;
+            });
+          },
+          onWebResourceError: (error) {
+            if (!mounted) return;
+            if (error.isForMainFrame != true) return;
+            setState(() {
+              _isLoading = false;
+              _errorMessage = error.description;
+            });
+          },
+        ),
+      )
+      ..loadRequest(Uri.parse(_organizationSchemeUrl));
+  }
+
+  void _reload() {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+    _controller.loadRequest(Uri.parse(_organizationSchemeUrl));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppStrings.organizationScheme),
+        title: const Text('Yönetim Şeması'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: _reload,
+            tooltip: 'Yenile',
+          ),
+        ],
       ),
-      body: FutureBuilder(
-        future: fetchOrganizationScheme(),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData) {
-            return snapshot.data;
-          } else {
-            return const Center(
-              child: CustomLoadingIndicator(),
-            );
-          }
-        },
+      body: Stack(
+        children: [
+          WebViewWidget(controller: _controller),
+          if (_isLoading) const Center(child: CustomLoadingIndicator()),
+          if (_errorMessage != null)
+            Center(
+              child: CustomErrorText(
+                message: 'Organizasyon şeması yüklenemedi.\n$_errorMessage',
+              ),
+            ),
+        ],
       ),
     );
-  }
-
-  Future<Widget> fetchOrganizationScheme() async {
-    const url = Endpoints.baseUrl + Endpoints.organizationScheme;
-    final headers = {
-      'Authorization': 'Bearer ${CacheRepository.getAccessToken()}',
-    };
-    const PDF(
-      swipeHorizontal: true,
-    ).cachedFromUrl(url, headers: headers);
-    return const PDF(
-      swipeHorizontal: true,
-    ).cachedFromUrl(url, headers: headers);
   }
 }

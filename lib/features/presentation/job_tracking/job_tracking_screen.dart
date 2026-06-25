@@ -9,6 +9,7 @@ import '../../data/repository/cache_repository.dart';
 import '../../widgets/custom_error_text.dart';
 import '../../widgets/loading_indicator.dart';
 import 'cubit/job_tracking_cubit.dart';
+import 'job_tracking_link.dart';
 
 class JobTrackingScreen extends StatefulWidget {
   const JobTrackingScreen({Key? key}) : super(key: key);
@@ -33,7 +34,7 @@ class _JobTrackingScreenState extends State<JobTrackingScreen> {
             if (state is JobTrackingFailed) {
               return CustomErrorText(message: state.message);
             } else if (state is JobTrackingSuccess) {
-              return JobTrackingSucesssBody(link: state.link);
+              return JobTrackingSuccessBody(link: state.link);
             } else {
               return const Center(
                 child: CustomLoadingIndicator(),
@@ -46,35 +47,47 @@ class _JobTrackingScreenState extends State<JobTrackingScreen> {
   }
 }
 
-class JobTrackingSucesssBody extends StatefulWidget {
-  const JobTrackingSucesssBody({Key? key, required this.link})
-      : super(key: key);
+class JobTrackingSuccessBody extends StatefulWidget {
+  const JobTrackingSuccessBody({Key? key, required this.link}) : super(key: key);
 
   final String link;
 
   @override
-  State<JobTrackingSucesssBody> createState() => _JobTrackingSucesssBodyState();
+  State<JobTrackingSuccessBody> createState() => _JobTrackingSuccessBodyState();
 }
 
-class _JobTrackingSucesssBodyState extends State<JobTrackingSucesssBody> {
-  late final WebViewController controller;
+class _JobTrackingSuccessBodyState extends State<JobTrackingSuccessBody> {
+  WebViewController? _controller;
+  String? _errorMessage;
 
   @override
   void initState() {
     super.initState();
-    final username = CacheRepository.getUsername();
-    final password = CacheRepository.getPassword();
+    final loginUri = buildJobTrackingAutoLoginUri(
+      baseUrl: widget.link,
+      username: CacheRepository.getUsername(),
+      password: CacheRepository.getPassword(),
+    );
 
-    controller = WebViewController()
+    if (loginUri == null) {
+      _errorMessage = CacheRepository.getUsername() == null ||
+              CacheRepository.getPassword() == null
+          ? AppStrings.jobTrackingCredentialsMissing
+          : AppStrings.jobTrackingLinkUnavailable;
+      return;
+    }
+
+    _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..loadRequest(Uri.parse(
-          "${widget.link}/AutoLogin?username=$username&password=$password"));
+      ..loadRequest(loginUri);
   }
 
   @override
   Widget build(BuildContext context) {
-    return WebViewWidget(
-      controller: controller,
-    );
+    if (_errorMessage != null) {
+      return CustomErrorText(message: _errorMessage!);
+    }
+
+    return WebViewWidget(controller: _controller!);
   }
 }

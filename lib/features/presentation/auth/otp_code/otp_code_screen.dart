@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pin_code_text_field/pin_code_text_field.dart';
 
+import '../../../../product/config/app_env.dart';
 import '../../../../product/constants/app_dimensions.dart';
 import '../../../../product/constants/app_strings.dart';
 import '../../../../product/router/app_routes.dart';
@@ -63,7 +64,7 @@ class _OtpCodeScreenState extends State<OtpCodeScreen> {
                 highlightAnimationEndColor: Colors.white12,
                 keyboardType: TextInputType.number,
                 onDone: (text) {
-                  if (widget.otpCode == text) {
+                  if (AppEnv.useMock || widget.otpCode == text) {
                     CacheRepository.verificatePhone();
                     context.pushNamed(AppRoutes.main);
                   } else {

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../product/constants/app_dimensions.dart';
+import '../../../product/constants/app_strings.dart';
 import '../../../product/utils/network_manager.dart';
 import '../../../product/utils/show_error_message.dart';
 import '../../../product/utils/show_loading_indicator.dart';
@@ -44,7 +45,7 @@ class _RequestAndComplaintScreenState extends State<RequestAndComplaintScreen> {
       create: (context) => RequestAndComplaintCubit(NetworkManager(Dio())),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('İstek&Şikayet'),
+          title: const Text(AppStrings.requestAndComplaint),
         ),
         body: BlocConsumer<RequestAndComplaintCubit, RequestAndComplaintState>(
           listener: (context, state) {

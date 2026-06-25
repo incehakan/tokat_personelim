@@ -18,7 +18,7 @@ List<IconData> drawerIcons = [
 
 List<String> drawerRoutes = [
   AppRoutes.history,
-  AppRoutes.legislation,
+  AppRoutes.organizationScheme,
   AppRoutes.vision,
   AppRoutes.activities,
   AppRoutes.units,

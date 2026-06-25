@@ -1,4 +1,4 @@
-package com.karabaglar.karabaglarpersonelim
+package com.tokat.tokatpersonelim
 
 import io.flutter.embedding.android.FlutterActivity
 

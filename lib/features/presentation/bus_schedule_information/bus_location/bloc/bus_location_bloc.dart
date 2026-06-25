@@ -7,6 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../../../../product/constants/app_images.dart';
 import '../../../../../product/constants/app_strings.dart';
 import '../../../../../product/constants/endpoints.dart';
+import '../../../../../product/utils/api_error_helper.dart';
 import '../../../../../product/utils/network_manager.dart';
 import '../../../../data/models/bus_location_model.dart';
 
@@ -82,7 +83,10 @@ class BusLocationBloc extends Bloc<BusLocationEvent, BusLocationState> {
     } on DioException catch (err) {
       emit(state.copyWith(
         status: BusLocationStatus.failure,
-        statusMessage: err.response!.statusMessage,
+        statusMessage: sanitizeServerMessage(
+          parseApiErrorMessage(err, fallback: AppStrings.notFoundBusLocation),
+          fallback: AppStrings.notFoundBusLocation,
+        ),
       ));
     }
   }

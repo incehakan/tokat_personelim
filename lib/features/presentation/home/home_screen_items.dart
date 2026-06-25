@@ -35,9 +35,18 @@ class MenuCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Image.network(
-              Endpoints.baseUrl + menu.icon!,
+              menu.icon?.startsWith('http') == true
+                  ? menu.icon!
+                  : Endpoints.baseUrl + (menu.icon ?? ''),
               fit: BoxFit.contain,
               height: 30,
+              errorBuilder: (context, error, stackTrace) {
+                return const Icon(
+                  Icons.apps,
+                  color: Colors.white,
+                  size: 30,
+                );
+              },
             ),
             Center(
               child: Text(

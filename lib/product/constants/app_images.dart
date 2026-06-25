@@ -1,9 +1,9 @@
 class AppImages {
   AppImages._();
 
-  static const String appLogoBlue = 'assets/images/app_logo_blue.png';
-  static const String appLogo = 'assets/images/app_logo.png';
-  static const String appIcon = 'assets/icons/transparent_app_icon.png';
+  static const String appLogoBlue = 'assets/icons/tokat_logo_splash.png';
+  static const String appLogo = 'assets/icons/tokat_logo_splash.png';
+  static const String appIcon = 'assets/icons/tokat_logo_icon.png';
 
   // Home
   static const String firstHomeImage = 'assets/images/anasayfa1.jpg';
@@ -15,7 +15,7 @@ class AppImages {
   static const String birthdayCakeImage = 'assets/images/birthday_cake.png';
   static const String confettiImage = 'assets/images/confetti.png';
   static const String profileCardImage = 'assets/images/profile_card.png';
-  static const String loginImage = 'assets/images/login.png';
+  static const String loginImage = 'assets/icons/tokat_logo_splash.png';
   static const String busImage = 'assets/images/bus.png';
   static const String personImage = 'assets/images/person.png';
   static const String userNotFoundImage = 'assets/images/user_not_found.png';

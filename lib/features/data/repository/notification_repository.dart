@@ -95,7 +95,7 @@ class NotificationRepository {
     const url = Endpoints.notificationsUrl + Endpoints.notificationHistory;
     try {
       final response = await networkManager.post(url, data: {
-        "UYGULAMA_KODU": "KBAGLARINTRANET2023",
+        "UYGULAMA_KODU": "TOKATINTRANET2026",
       });
       final data = NotificationResponse.fromJson(response.data);
       if (data.notifications != null && data.notifications!.isNotEmpty) {

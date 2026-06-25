@@ -25,14 +25,12 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   final ZoomDrawerController drawerController = ZoomDrawerController();
-  final PageController pageController = PageController();
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => MainScreenCubit(),
       child: MainScreenBody(
         drawerController: drawerController,
-        pageController: pageController,
       ),
     );
   }
@@ -42,11 +40,9 @@ class MainScreenBody extends StatelessWidget {
   const MainScreenBody({
     Key? key,
     required this.drawerController,
-    required this.pageController,
   }) : super(key: key);
 
   final ZoomDrawerController drawerController;
-  final PageController pageController;
 
   @override
   Widget build(BuildContext context) {
@@ -62,10 +58,12 @@ class MainScreenBody extends StatelessWidget {
       menuScreen: const DrawerMenu(),
       mainScreen: Scaffold(
         appBar: AppBar(
-          title: Image.asset(
-            AppImages.appLogo,
-            color: AppColors.lynch,
-            width: 150,
+          title: const Text(
+            'TOKAT BELEDİYESİ',
+            style: TextStyle(
+              color: AppColors.lynch,
+              fontWeight: FontWeight.w700,
+            ),
           ),
           leading: IconButton(
             icon: const Icon(
@@ -101,9 +99,8 @@ class MainScreenBody extends StatelessWidget {
                   ),
           ],
         ),
-        body: PageView(
-          controller: pageController,
-          physics: const NeverScrollableScrollPhysics(),
+        body: IndexedStack(
+          index: context.watch<MainScreenCubit>().state,
           children: const [
             HomeScreen(),
             ProfileScreen(),
@@ -111,22 +108,19 @@ class MainScreenBody extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           backgroundColor: Theme.of(context).primaryColor,
-          child: Padding(
-            padding: EdgeInsets.zero,
-            child: Image.asset(
-              AppImages.appIcon,
-              width: 45,
-              fit: BoxFit.scaleDown,
-            ),
+          child: const Icon(
+            Icons.home,
+            color: Colors.white,
           ),
-          onPressed: () => context.pushNamed(AppRoutes.feed),
+          onPressed: () {
+            context.read<MainScreenCubit>().onItemTapped(0);
+          },
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: context.watch<MainScreenCubit>().state,
           onTap: (value) {
             context.read<MainScreenCubit>().onItemTapped(value);
-            pageController.jumpToPage(value);
           },
           items: List.generate(
             navbarLabels.length,
@@ -156,7 +150,14 @@ class DrawerMenu extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset(AppImages.appLogo),
+            const Text(
+              'TOKAT BELEDİYESİ',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
             const SizedBox(height: AppDimensions.largeGap),
             ListView(
               shrinkWrap: true,

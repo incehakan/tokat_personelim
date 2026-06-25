@@ -16,7 +16,7 @@ web arayüzünden yönetmenizi sağlar.
 
 1. https://codemagic.io adresine gidin
 2. GitHub hesabınızla giriş yapın
-3. **Add application** → `karabaglar_personelim` reposunu seçin
+3. **Add application** → **tokat_personelim** (veya kodunuzu yüklediğiniz) GitHub reposunu seçin
 4. Proje tipi: **Flutter**
 5. `codemagic.yaml` dosyası otomatik algılanır
 
@@ -110,8 +110,8 @@ Saatlik ücretli Mac kiralama servisleri:
 Kiralık Mac'te:
 
 ```bash
-git clone https://github.com/incehakan/karabaglar_personelim.git
-cd karabaglar_personelim
+git clone https://github.com/KURUMUNUZ/tokat_personelim.git
+cd tokat_personelim
 chmod +x scripts/build_release_ios.sh
 ./scripts/build_release_ios.sh
 ```

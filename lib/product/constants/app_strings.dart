@@ -59,6 +59,14 @@ class AppStrings {
   static const String salaryDetailInfo = 'Maaş Detay Bilgileri';
   static const String amount = 'Tutar';
   static const String payroll = 'Bordro';
+  static const String sharePayroll = 'Bordroyu Paylaş';
+  static const String shareViaWhatsApp = 'WhatsApp ile Paylaş';
+  static const String shareViaEmail = 'E-posta ile Paylaş';
+  static const String saveToPhone = 'Telefona Kaydet';
+  static const String payrollShareMessage = 'Maaş bordrom ektedir.';
+  static const String payrollShareEmailSubject = 'Maaş Bordrosu';
+  static const String payrollSavedSuccessfully = 'Bordro başarıyla kaydedildi.';
+  static const String payrollSaveCancelled = 'Kaydetme işlemi iptal edildi.';
   static const String netSalary = 'Net Maaş';
   static const String grossSalary = 'Brüt Maaş';
   static const String salaryCuts = 'Kesintiler';
@@ -66,8 +74,15 @@ class AppStrings {
   // Entrance (Giriş-Çıkış İşlemleri)
   static const String pdksOperations = 'PDKS İşlemlerim';
 
+  // Request & feedback
+  static const String requestAndComplaint = 'Öneri ve Görüşlerim';
+
   // Job Tracking
   static const String jobTracking = 'İş Takip';
+  static const String jobTrackingLinkUnavailable =
+      'İş takip bağlantısı sunucuda tanımlı değil. Lütfen kurum yöneticinize başvurun.';
+  static const String jobTrackingCredentialsMissing =
+      'Oturum bilgileri bulunamadı. Lütfen tekrar giriş yapın.';
 
   // Eşrefpaşa
   static const String appointment = 'Eşrefpaşa Randevu';

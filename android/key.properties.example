@@ -1,0 +1,10 @@
+# Bu dosyayı "key.properties" olarak kopyalayın ve değerleri doldurun.
+# key.properties ve *.jks dosyaları git'e eklenmez (gizli tutulmalıdır).
+#
+# Keystore oluşturmak için proje kökünde:
+#   .\scripts\create_upload_keystore.ps1
+
+storePassword=STORE_SIFRENIZ
+keyPassword=KEY_SIFRENIZ
+keyAlias=upload
+storeFile=app/upload-keystore.jks

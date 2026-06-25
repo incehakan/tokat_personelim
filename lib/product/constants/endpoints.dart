@@ -1,9 +1,9 @@
 class Endpoints {
   Endpoints._();
 
-  static const String baseUrl = 'https://personel.karabaglar.bel.tr/Innosa.WA.MPR';
+  static const String baseUrl = 'https://e-hizmet.tokat.bel.tr/Innosa.WA.MPR';
   static const String hospitalUrl = 'https://hbys.izmir.bel.tr/ProbelMobilServiceV2';
-  static const String notificationsUrl = 'https://personel.karabaglar.bel.tr/Innosa.WA.MYI';
+  static const String notificationsUrl = 'https://e-hizmet.tokat.bel.tr/Innosa.WA.MYI';
 
   // Auth
   static const String token = '/token';
@@ -19,7 +19,7 @@ class Endpoints {
   static const String debit = '/api/ayn/zimmetler';
   static const String leave = '/api/prs/PersonelIzinBilgileriniGetir';
   static const String salary = '/api/prs/PersonelMaasBilgileri';
-  static const String corporateSalary = '/api/prs/KbaglarSirketPersonelBordroGetir';
+  static const String corporateSalary = '/api/prs/TokatSirketPersonelBordroGetir';
   static const String payroll = '/api/prs/MemurBordroBilgisiIndir';
   static const String lastEntrance = '/api/prs/PersonelPdksSonGecisBilgileriGetir';
   static const String jobTracking = '/api/mpr/istakipLink';

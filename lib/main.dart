@@ -9,7 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:karabaglarpersonelim/firebase_options.dart';
+import 'package:tokatpersonelim/firebase_options.dart';
 
 import 'features/data/repository/cache_repository.dart';
 import 'features/data/repository/firebase_repository.dart';
@@ -133,7 +133,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'Karabağlar Personelim',
+      title: 'Tokat Personelim',
       theme: appTheme,
       debugShowCheckedModeBanner: false,
       routerConfig: appRouter,

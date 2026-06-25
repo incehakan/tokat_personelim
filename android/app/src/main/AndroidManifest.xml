@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <queries>
+        <package android:name="com.whatsapp" />
+        <package android:name="com.whatsapp.w4b" />
         <!-- If your app opens https URLs -->
         <intent>
             <action android:name="android.intent.action.VIEW" />
@@ -18,7 +20,7 @@
         </intent>
     </queries>
    <application
-        android:label="Karabağlar Personelim"
+        android:label="Tokat Personelim"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

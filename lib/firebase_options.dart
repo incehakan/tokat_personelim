@@ -47,36 +47,36 @@ class DefaultFirebaseOptions {
     apiKey: 'AIzaSyDmovKD7Pvp0SVTk_-2Oozf8Ye-0tAA3UU',
     appId: '1:102540313442:web:06acabd233b36ac04ba23b',
     messagingSenderId: '102540313442',
-    projectId: 'karabaglarpersonelim',
-    authDomain: 'karabaglarpersonelim.firebaseapp.com',
-    storageBucket: 'karabaglarpersonelim.appspot.com',
+    projectId: 'tokatpersonelim',
+    authDomain: 'tokatpersonelim.firebaseapp.com',
+    storageBucket: 'tokatpersonelim.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDYL1TtPbA7a7-EWoqNng2NEmrDDsy_Sec',
     appId: '1:102540313442:android:de33cc344f625a284ba23b',
     messagingSenderId: '102540313442',
-    projectId: 'karabaglarpersonelim',
-    storageBucket: 'karabaglarpersonelim.appspot.com',
+    projectId: 'tokatpersonelim',
+    storageBucket: 'tokatpersonelim.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyB_enfsUU-6KuiCT8NP4aQbpeNt26tNvrM',
     appId: '1:102540313442:ios:6b24dc4f226f9c7c4ba23b',
     messagingSenderId: '102540313442',
-    projectId: 'karabaglarpersonelim',
-    storageBucket: 'karabaglarpersonelim.appspot.com',
+    projectId: 'tokatpersonelim',
+    storageBucket: 'tokatpersonelim.appspot.com',
     androidClientId: '102540313442-j11k4a46mb5t63pqn39ldqujjb8utv6k.apps.googleusercontent.com',
-    iosBundleId: 'com.karabaglar.karabaglarpersonelim',
+    iosBundleId: 'com.tokat.tokatpersonelim',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyB_enfsUU-6KuiCT8NP4aQbpeNt26tNvrM',
     appId: '1:102540313442:ios:101408777ac4e2114ba23b',
     messagingSenderId: '102540313442',
-    projectId: 'karabaglarpersonelim',
-    storageBucket: 'karabaglarpersonelim.appspot.com',
+    projectId: 'tokatpersonelim',
+    storageBucket: 'tokatpersonelim.appspot.com',
     androidClientId: '102540313442-j11k4a46mb5t63pqn39ldqujjb8utv6k.apps.googleusercontent.com',
-    iosBundleId: 'com.izmirbb.prsUygulamasi.RunnerTests',
+    iosBundleId: 'com.tokat.tokatpersonelim.RunnerTests',
   );
 }

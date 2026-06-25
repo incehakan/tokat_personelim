@@ -91,7 +91,7 @@ class FirebaseRepository {
 
       final body = {
         "FCMToken": token,
-        "UygulamaKodu": "KBAGLARINTRANET2023",
+        "UygulamaKodu": "TOKATINTRANET2026",
         "IsletimSistemiId": Platform.isAndroid ? "2" : "1"
       };
       if (kDebugMode) {

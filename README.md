@@ -1,4 +1,4 @@
-# karabaglarpersonelim
+# tokatpersonelim
 
 kurumlar icin personel uygulamasi
 

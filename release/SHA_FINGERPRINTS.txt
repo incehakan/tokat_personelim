@@ -1,0 +1,20 @@
+Tokat Personelim — Upload Keystore SHA Parmak İzleri
+=====================================================
+Keystore: android/app/upload-keystore.jks
+Alias: upload
+Tarih: 10.06.2026
+
+SHA1:
+E0:13:89:FE:EB:94:5A:4C:52:AC:9B:22:17:5C:08:65:9F:0A:A7:4E
+
+SHA256:
+1A:76:F1:4A:9B:49:7B:83:84:6B:4A:56:15:2F:8C:F7:52:5F:6A:2A:6A:75:AC:4E:A5:F5:0A:0A:6E:6F:84:D2
+
+KULLANIM
+- Firebase Console → Proje ayarları → Android uygulaması → SHA ekle
+- Google Maps API anahtarı kısıtlamaları (paket adı + SHA-1)
+- Play Console → Uygulama imzalama (Play App Signing etkinse upload key SHA'sı yeterli)
+
+NOT: Play Store yayınından sonra Google'ın yönettiği imza için
+Play Console → Kurulum → Uygulama imzalama bölümündeki
+"Uygulama imzalama anahtarı sertifikası" SHA değerlerini de Firebase'e ekleyin.

@@ -7,6 +7,7 @@ import '../forgot_password/forgot_password_dialog.dart';
 import '../../../../product/constants/app_dimensions.dart';
 import '../../../../product/constants/app_images.dart';
 import '../../../../product/constants/app_strings.dart';
+import '../../../../product/config/app_env.dart';
 import '../../../../product/router/app_routes.dart';
 import '../../../../product/utils/dependency_injection.dart';
 import '../../../../product/utils/show_error_message.dart';
@@ -59,9 +60,13 @@ class _LoginScreenState extends State<LoginScreen> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        title: Image.asset(
-          AppImages.appLogoBlue,
-          width: 250,
+        title: const Text(
+          'TOKAT BELEDİYESİ',
+          style: TextStyle(
+            fontSize: 28,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 0.5,
+          ),
         ),
       ),
       body: BlocProvider(
@@ -72,11 +77,15 @@ class _LoginScreenState extends State<LoginScreen> {
               showLoadingIndicator(context);
             } else if (state is LoginFailed) {
               // Close Loading Indicator
-              context.pop();
+              if (Navigator.of(context, rootNavigator: true).canPop()) {
+                context.pop();
+              }
               showErrorMessage(state.message);
             } else if (state is LoginSuccess) {
               // Close Loading Indicator
-              context.pop();
+              if (Navigator.of(context, rootNavigator: true).canPop()) {
+                context.pop();
+              }
               if (CacheRepository.isPhoneVerificated()) {
                 context.pushNamed(AppRoutes.main);
               } else {
@@ -126,9 +135,15 @@ class LoginScreenBody extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Image.asset(
-            AppImages.loginImage,
-            width: 200,
+          ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.sizeOf(context).width * 0.75,
+              maxHeight: MediaQuery.sizeOf(context).height * 0.28,
+            ),
+            child: Image.asset(
+              AppImages.loginImage,
+              fit: BoxFit.contain,
+            ),
           ),
           DefaultBackgroundCard(
             child: FormSection(
@@ -228,6 +243,14 @@ class _FormSectionState extends State<FormSection> {
           AppButton(
             text: AppStrings.login,
             onPressed: () {
+              if (AppEnv.useMock) {
+                context.read<LoginCubit>().login(
+                      widget.usernameController.text.isEmpty ? 'mock_user' : widget.usernameController.text,
+                      widget.passwordController.text.isEmpty ? 'mock_password' : widget.passwordController.text,
+                    );
+                return;
+              }
+
               if (widget.formKey.currentState!.validate()) {
                 if (widget.usernameController.text == 'Tester') {
                   context.pushReplacementNamed(AppRoutes.main);

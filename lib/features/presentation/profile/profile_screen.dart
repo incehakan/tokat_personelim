@@ -14,6 +14,7 @@ import '../../../product/extensions/context_extensions.dart';
 import '../../../product/router/app_routes.dart';
 import '../../../product/utils/network_manager.dart';
 import '../../data/models/leave.dart';
+import '../../data/models/salary.dart';
 import '../../data/models/user_info_model.dart';
 import '../../widgets/app_button.dart';
 import '../../widgets/custom_error_text.dart';
@@ -26,6 +27,51 @@ import 'bloc/profile_bloc.dart';
 import 'digital_card_dialog.dart';
 
 part 'profile_screen_items.dart';
+
+List<Salary> _salariesForChart(List<Salary>? salaries) {
+  if (salaries == null || salaries.isEmpty) {
+    return [];
+  }
+  final sorted = List<Salary>.from(salaries)
+    ..sort((a, b) {
+      final yearCompare = (a.payrollYear ?? 0).compareTo(b.payrollYear ?? 0);
+      if (yearCompare != 0) {
+        return yearCompare;
+      }
+      return (a.payrollMonth ?? 0).compareTo(b.payrollMonth ?? 0);
+    });
+  if (sorted.length <= 12) {
+    return sorted;
+  }
+  return sorted.sublist(sorted.length - 12);
+}
+
+String _monthLabel(Salary salary) {
+  const monthNames = <String>[
+    '',
+    'Oca',
+    'Şub',
+    'Mar',
+    'Nis',
+    'May',
+    'Haz',
+    'Tem',
+    'Ağu',
+    'Eyl',
+    'Eki',
+    'Kas',
+    'Ara',
+  ];
+  final month = salary.payrollMonth?.toInt();
+  if (month != null && month >= 1 && month <= 12) {
+    return monthNames[month];
+  }
+  final text = salary.month?.trim();
+  if (text != null && text.isNotEmpty) {
+    return text.length > 5 ? text.substring(0, 5) : text;
+  }
+  return '';
+}
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -130,6 +176,27 @@ class SalarySection extends StatelessWidget {
                 message: state.statusMessage,
               );
             case SalaryStatus.success:
+              final chartSalaries = _salariesForChart(state.salaries);
+              if (chartSalaries.isEmpty) {
+                return const CustomErrorText(
+                  message: 'Gösterilecek maaş kaydı bulunamadı.',
+                );
+              }
+              final spots = chartSalaries
+                  .asMap()
+                  .entries
+                  .map(
+                    (entry) => FlSpot(
+                      entry.key.toDouble(),
+                      entry.value.netSalary?.toDouble() ?? 0,
+                    ),
+                  )
+                  .toList();
+              final maxNet = spots.map((s) => s.y).fold<double>(
+                    0,
+                    (prev, y) => y > prev ? y : prev,
+                  );
+              final chartMaxY = maxNet > 0 ? maxNet * 1.15 : 1.0;
               return SizedBox(
                 height: 300,
                 width: context.width,
@@ -140,54 +207,49 @@ class SalarySection extends StatelessWidget {
                         child: LineChart(
                           LineChartData(
                             minX: 0,
-                            maxX: 11,
+                            maxX: (chartSalaries.length - 1).toDouble(),
                             minY: 0,
-                            maxY: 50000,
+                            maxY: chartMaxY,
                             titlesData: FlTitlesData(
                               bottomTitles: AxisTitles(
                                 sideTitles: SideTitles(
                                   showTitles: true,
                                   reservedSize: 22,
+                                  interval: 1,
                                   getTitlesWidget: (value, meta) {
-                                    // Yeni yapı: getTitles yerine getTitlesWidget
-                                    TextStyle style = const TextStyle(
+                                    const style = TextStyle(
                                       color: Colors.black,
-                                      fontSize: 13,
+                                      fontSize: 11,
                                     );
-                                    switch (value.toInt()) {
-                                      case 0:
-                                        return Text('Ocak', style: style);
-                                      case 2:
-                                        return Text('Mart', style: style);
-                                      case 4:
-                                        return Text('Mayıs', style: style);
-                                      case 6:
-                                        return Text('Tem.', style: style);
-                                      case 8:
-                                        return Text('Eylül', style: style);
-                                      case 10:
-                                        return Text('Kasım', style: style);
+                                    final index = value.toInt();
+                                    if (index < 0 || index >= chartSalaries.length) {
+                                      return const SizedBox.shrink();
                                     }
-                                    return const Text('');
+                                    final label = _monthLabel(chartSalaries[index]);
+                                    return Text(
+                                      label,
+                                      style: style,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    );
                                   },
                                 ),
                               ),
                               leftTitles: AxisTitles(
                                 sideTitles: SideTitles(
                                   showTitles: true,
-                                  reservedSize: 30,
+                                  reservedSize: 42,
                                   getTitlesWidget: (value, meta) {
                                     return Text(
-                                      value.toString(),
+                                      value.toInt().toString(),
                                       style: const TextStyle(
                                         color: Colors.black,
-                                        fontSize: 13,
+                                        fontSize: 11,
                                       ),
                                     );
                                   },
                                 ),
                               ),
-                              // Üst ve sağ başlıklar kapalı bırakıldı.
                               topTitles: const AxisTitles(
                                 sideTitles: SideTitles(showTitles: false),
                               ),
@@ -208,18 +270,11 @@ class SalarySection extends StatelessWidget {
                             ),
                             lineBarsData: [
                               LineChartBarData(
-                                spots: List.generate(
-                                  state.salaries!.getRange(0, 11).length,
-                                  (index) => FlSpot(
-                                    index.toDouble(),
-                                    state.salaries![index].netSalary!
-                                        .toDouble(),
-                                  ),
-                                ),
-                                isCurved: true,
-                                // 'colors' yerine artık 'gradient' veya 'color' kullanılabilir.
+                                spots: spots,
+                                isCurved: chartSalaries.length > 2,
                                 color: AppColors.sunsetOrange.withOpacity(0.8),
-                                barWidth: 5,
+                                barWidth: 4,
+                                dotData: const FlDotData(show: true),
                               ),
                             ],
                           ),

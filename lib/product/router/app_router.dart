@@ -1,9 +1,9 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
-import 'package:karabaglarpersonelim/features/data/repository/cache_repository.dart';
-import 'package:karabaglarpersonelim/features/presentation/notifications/feed_screen.dart';
-import 'package:karabaglarpersonelim/features/presentation/notifications/tab_screens/notifications/notifications_screen.dart';
+import 'package:tokatpersonelim/features/data/repository/cache_repository.dart';
+import 'package:tokatpersonelim/features/presentation/notifications/feed_screen.dart';
+import 'package:tokatpersonelim/features/presentation/notifications/tab_screens/notifications/notifications_screen.dart';
 
 import '../../features/data/models/subordinates_model.dart';
 import '../../features/presentation/accident/accident_screen.dart';

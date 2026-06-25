@@ -16,7 +16,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     super.initState();
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..loadRequest(Uri.parse("https://kbweb2.karabaglar.bel.tr/ebelediye/"));
+      ..loadRequest(Uri.parse("https://online.tokat.bel.tr/"));
   }
 
   @override

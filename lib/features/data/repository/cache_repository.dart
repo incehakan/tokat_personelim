@@ -63,14 +63,12 @@ class CacheRepository {
     _userCredentialsBox.put(HiveConstants.password, password);
   }
 
-  static String getUsername() {
-    final username = _userCredentialsBox.get(HiveConstants.username);
-    return username;
+  static String? getUsername() {
+    return _userCredentialsBox.get(HiveConstants.username) as String?;
   }
 
-  static String getPassword() {
-    final password = _userCredentialsBox.get(HiveConstants.password);
-    return password;
+  static String? getPassword() {
+    return _userCredentialsBox.get(HiveConstants.password) as String?;
   }
 
   static void saveUserInfo(UserInfo user) {

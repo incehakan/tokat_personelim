@@ -1,0 +1,30 @@
+Tokat Personelim — Sürüm 1.3.4 (Build 5)
+Tarih: 25.06.2026
+
+YENİ ÖZELLİKLER
+- (Bu sürümde yeni özellik yok)
+
+DÜZELTMELER
+- Şifremi unuttum ekranında SMS gönder sonrası yükleme ekranında takılma sorunu giderildi
+- Şifre sıfırlama API adresi düzeltildi (e-hizmet.tokat.bel.tr)
+- Ağ hatalarında kullanıcıya anlaşılır Türkçe mesaj gösterimi eklendi
+
+TEKNİK BİLGİ
+- Paket adı (Android): com.tokat.tokatpersonelim
+- Bundle ID (iOS): com.tokat.tokatpersonelim
+- versionName: 1.3.4
+- versionCode / build: 5
+- API: https://e-hizmet.tokat.bel.tr/Innosa.WA.MYI
+
+KURULUM (APK)
+1. TokatPersonelim-v1.3.4-release.apk dosyasını cihaza aktarın
+2. Ayarlar → Güvenlik → Bilinmeyen kaynaklardan uygulama yüklemeye izin verin
+3. APK dosyasını açıp kurun
+
+GOOGLE PLAY
+- TokatPersonelim-v1.3.4-playstore.aab dosyasını Play Console'a yükleyin
+- Detay: release/PLAY_STORE_YUKLEME.txt
+
+APP STORE (iOS)
+- TokatPersonelim-v1.3.4-appstore.ipa (Mac'te derlenir)
+- Detay: release/APP_STORE_YUKLEME.txt

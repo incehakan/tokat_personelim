@@ -2,7 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../product/constants/app_strings.dart';
 import '../../../../../product/constants/endpoints.dart';
+import '../../../../../product/utils/api_error_helper.dart';
 import '../../../../../product/utils/network_manager.dart';
 import '../../../../data/models/driver_hours_model.dart';
 
@@ -31,21 +33,31 @@ class DriverHoursBloc extends Bloc<DriverHoursEvent, DriverHoursState> {
         },
       );
       final data = DriverHoursModel.fromJson(response.data);
-      if (data.seferListe != null) {
+      final hasTrips = data.seferListe != null && data.seferListe!.isNotEmpty;
+      final successCode = data.sonucKodu == null || data.sonucKodu == 0;
+
+      if (hasTrips && successCode) {
         emit(state.copyWith(
           status: DriverHoursStatus.success,
           driverHours: data.seferListe,
         ));
-      } else {
-        emit(state.copyWith(
-          status: DriverHoursStatus.failure,
-          statusMessage: data.sonucMesaj,
-        ));
+        return;
       }
+
+      emit(state.copyWith(
+        status: DriverHoursStatus.failure,
+        statusMessage: sanitizeServerMessage(
+          data.sonucMesaj,
+          fallback: AppStrings.generalErrorMessage,
+        ),
+      ));
     } on DioException catch (err) {
       emit(state.copyWith(
         status: DriverHoursStatus.failure,
-        statusMessage: err.response!.statusMessage,
+        statusMessage: sanitizeServerMessage(
+          parseApiErrorMessage(err),
+          fallback: AppStrings.generalErrorMessage,
+        ),
       ));
     }
   }

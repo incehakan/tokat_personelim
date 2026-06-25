@@ -6,6 +6,8 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../../../../product/constants/endpoints.dart';
+import '../../../../product/extensions/menu_route_extension.dart';
+import '../../../../product/utils/api_error_helper.dart';
 import '../../../../product/utils/network_manager.dart';
 import '../../../data/models/menu_model.dart';
 import '../../../data/models/popup_model.dart';
@@ -38,16 +40,21 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     emit(state.copyWith(status: HomeStatus.loading));
     try {
       final response = await networkManager.get(Endpoints.employeeMenus);
-      final data = MenuModel.fromJson(response.data);
-      print(data.menu);
+      final data = MenuModel.fromJson(requireJsonMap(response.data));
+      final visibleMenus = (data.menu ?? [])
+          .where((item) => item.isVisible && item.isSupportedInApp)
+          .toList()
+        ..sort((a, b) => (a.order ?? 0).compareTo(b.order ?? 0));
       emit(state.copyWith(
         status: HomeStatus.menuSuccess,
-        menu: data.menu,
+        menu: visibleMenus,
       ));
       add(const GetUserInfo());
       add(const GetActivePopUp());
       add(const SendFirebaseToken());
     } on DioException catch (_) {
+      emit(state.copyWith(status: HomeStatus.menuFailed));
+    } catch (_) {
       emit(state.copyWith(status: HomeStatus.menuFailed));
     }
   }
@@ -63,11 +70,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     const url = Endpoints.notificationsUrl + Endpoints.activePopUp;
     try {
       final response = await networkManager.get(url);
-      final data = ActivePopUpModel.fromJson(response.data);
-      if (data.data != null) {
-        if (data.data!.icerik != null) {
-          emit(state.copyWith(status: HomeStatus.popUpSuccess));
-        }
+      final data = ActivePopUpModel.fromJson(requireJsonMap(response.data));
+      if (data.data?.icerik != null) {
+        emit(state.copyWith(
+          status: HomeStatus.popUpSuccess,
+          popUp: data.data,
+        ));
       }
     } catch (_) {}
   }
@@ -77,16 +85,21 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     Emitter<HomeState> emit,
   ) async {
     const url = '${Endpoints.notificationsUrl}/api/myi/pushMesajKimligi';
-    final token = await FirebaseMessaging.instance.getToken();
-    await networkManager.post(
-      url,
-      data: {
-        "FCMToken": token.toString(),
-        "UygulamaKodu": "KBAGLARINTRANET2023",
-        "IsletimSistemiId": Platform.isAndroid ? "2" : "1",
-      },
-    );
-    print('TokenYollandı: $token');
+    try {
+      final token = await FirebaseMessaging.instance.getToken();
+      await networkManager.post(
+        url,
+        data: {
+          "FCMToken": token.toString(),
+          "UygulamaKodu": "TOKATINTRANET2026",
+          "IsletimSistemiId": Platform.isAndroid ? "2" : "1",
+        },
+      );
+      print('TokenYollandı: $token');
+    } on DioException catch (e) {
+      // Push token endpoint may be unavailable in some environments.
+      print('Token gönderimi atlandı: ${e.response?.statusCode}');
+    } catch (_) {}
   }
 
   void _onInitializeFirebaseMessages(
@@ -113,8 +126,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     GetUserInfo event,
     Emitter<HomeState> emit,
   ) async {
-    final response = await networkManager.get(Endpoints.userInfo);
-    final data = UserInfoModel.fromJson(response.data);
-    CacheRepository.saveUserInfo(data.userInfo!);
+    try {
+      final response = await networkManager.get(Endpoints.userInfo);
+      final data = UserInfoModel.fromJson(requireJsonMap(response.data));
+      if (data.userInfo != null) {
+        CacheRepository.saveUserInfo(data.userInfo!);
+      }
+    } catch (_) {
+      // Kullanıcı bilgisi alınamazsa ana sayfa yine de çalışmaya devam eder.
+    }
   }
 }

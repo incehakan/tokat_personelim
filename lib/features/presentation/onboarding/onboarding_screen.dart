@@ -46,8 +46,30 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       body: Padding(
         padding: AppDimensions.pagePadding,
         child: Center(
-          child: Image.asset(
-            AppImages.appLogoBlue,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.sizeOf(context).width * 0.8,
+                  maxHeight: MediaQuery.sizeOf(context).height * 0.4,
+                ),
+                child: Image.asset(
+                  AppImages.appLogo,
+                  fit: BoxFit.contain,
+                ),
+              ),
+              const SizedBox(height: AppDimensions.mediumGap),
+              const Text(
+                'TOKAT BELEDİYESİ',
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 0.5,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
         ),
       ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:karabaglarpersonelim/features/data/models/notification.dart';
-import 'package:karabaglarpersonelim/features/presentation/notifications/birthday_notification_dialog.dart';
-import 'package:karabaglarpersonelim/features/presentation/notifications/notification_detail_dialog.dart';
+import 'package:tokatpersonelim/features/data/models/notification.dart';
+import 'package:tokatpersonelim/features/presentation/notifications/birthday_notification_dialog.dart';
+import 'package:tokatpersonelim/features/presentation/notifications/notification_detail_dialog.dart';
 
 import '../../../../../product/constants/app_dimensions.dart';
 import '../../../../../product/utils/dependency_injection.dart';

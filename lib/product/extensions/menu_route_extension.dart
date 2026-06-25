@@ -38,6 +38,7 @@ extension MenuRouteExtension on MenuItem {
       case "ramakPop()":
         return AppRoutes.accident;
       case "sikayetPop()":
+      case "OneriGorusPop()":
         return AppRoutes.requestAndComplaint;
       case "sayimPop()":
         return AppRoutes.movableCount;
@@ -51,5 +52,12 @@ extension MenuRouteExtension on MenuItem {
       default:
         return AppRoutes.main;
     }
+  }
+
+  /// Uygulamada karşılığı olmayan menüler ana sayfada gösterilmez.
+  bool get isSupportedInApp {
+    final url = menuUrl?.trim();
+    if (url == null || url.isEmpty) return false;
+    return route != AppRoutes.main;
   }
 }

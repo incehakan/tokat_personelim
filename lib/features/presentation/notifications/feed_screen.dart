@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:karabaglarpersonelim/features/presentation/notifications/tab_screens/flow/feed_screen.dart';
+import 'package:tokatpersonelim/features/presentation/notifications/tab_screens/flow/feed_screen.dart';
 
 import '../../../product/constants/app_colors.dart';
 import '../../../product/constants/app_images.dart';

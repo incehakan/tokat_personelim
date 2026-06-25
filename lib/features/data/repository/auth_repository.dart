@@ -5,6 +5,8 @@ import 'package:dio/dio.dart';
 
 import '../../../product/constants/endpoints.dart';
 import '../../../product/exceptions/server_exception.dart';
+import '../../../product/config/app_env.dart';
+import '../../../product/utils/api_error_helper.dart';
 import '../../../product/utils/network_manager.dart';
 import '../models/change_password_response_model.dart';
 import '../models/login_response_model.dart';
@@ -30,6 +32,10 @@ class AuthRepository {
   }
 
   Future<Either<ServerException, void>> login(String username, String password) async {
+    if (AppEnv.useMock) {
+      CacheRepository.setToken('mock_access_token', 'mock_refresh_token');
+      return const Right(null);
+    }
     try {
       // var basicHeader = base64Encode(utf8.encode('$username:$password'));
       // dio.options.headers = {'Authorization': 'Basic $basicHeader'};
@@ -49,48 +55,41 @@ class AuthRepository {
 
       return const Right(null);
     } on DioException catch (err) {
-      String errorMessage = 'Giriş yapılırken bir hata oluştu';
-      
-      if (err.response?.data != null) {
-        try {
-          final errorData = ServiceErrorModel.fromJson(err.response!.data);
-          if (errorData.errorDescription != null && errorData.errorDescription!.isNotEmpty) {
-            errorMessage = errorData.errorDescription!;
-          } else if (errorData.error != null) {
-            errorMessage = errorData.error!;
-          }
-        } catch (e) {
-          // JSON parse hatası durumunda response data'yı direkt kullan
-          if (err.response!.data is Map) {
-            final data = err.response!.data as Map;
-            if (data.containsKey('error_description')) {
-              errorMessage = data['error_description'].toString();
-            } else if (data.containsKey('error')) {
-              errorMessage = data['error'].toString();
-            }
-          } else if (err.response!.data is String) {
-            errorMessage = err.response!.data.toString();
-          }
-        }
-      } else if (err.message != null) {
-        errorMessage = err.message!;
-      }
-      
       return Left(
-        ServerException(errorMessage),
+        ServerException(
+          parseApiErrorMessage(err, fallback: 'Giriş yapılırken bir hata oluştu'),
+        ),
       );
     }
   }
 
   Future<Either<ServerException, String>> sendOtpCode() async {
+    if (AppEnv.useMock) {
+      return const Right('123456');
+    }
     try {
-      final response = await networkManager.post(Endpoints.otp);
-      final data = OtpModel.fromJson(response.data);
+      final response = await networkManager.post(
+        Endpoints.otp,
+        data: <String, dynamic>{},
+      );
+      final data = OtpModel.fromJson(requireJsonMap(response.data));
+      if (data.code != null && data.code != 0) {
+        return Left(
+          ServerException(
+            data.message ?? 'Doğrulama kodu gönderilemedi.',
+          ),
+        );
+      }
+      if (data.pkId == null) {
+        return Left(
+          ServerException('Doğrulama kodu gönderilemedi.'),
+        );
+      }
       return Right(data.pkId!.toInt().toString());
     } on DioException catch (err) {
       return Left(
         ServerException(
-          err.response!.data.toString(),
+          parseApiErrorMessage(err, fallback: 'Doğrulama kodu gönderilemedi.'),
         ),
       );
     }
@@ -131,7 +130,9 @@ class AuthRepository {
           "TC_KIMLIK_NO": identity,
         },
       );
-      final data = ChangePasswordResponseModel.fromJson(response.data);
+      final data = ChangePasswordResponseModel.fromJson(
+        requireJsonMap(response.data),
+      );
       if (data.kod == 0) {
         return const Right(null);
       } else {
@@ -140,7 +141,10 @@ class AuthRepository {
     } on DioException catch (err) {
       return Left(
         ServerException(
-          err.response!.data.toString(),
+          parseApiErrorMessage(
+            err,
+            fallback: 'Şifre sıfırlama kodu gönderilemedi.',
+          ),
         ),
       );
     }
@@ -168,7 +172,9 @@ class AuthRepository {
           "SIFRE_TEKRAR": confirmPassword,
         },
       );
-      final data = ChangePasswordResponseModel.fromJson(response.data);
+      final data = ChangePasswordResponseModel.fromJson(
+        requireJsonMap(response.data),
+      );
       if (data.kod == 0) {
         return const Right("Şifreniz başarıyla değiştirilmiştir");
       } else {
@@ -177,7 +183,10 @@ class AuthRepository {
     } on DioException catch (err) {
       return Left(
         ServerException(
-          err.response!.data.toString(),
+          parseApiErrorMessage(
+            err,
+            fallback: 'Şifre değiştirilirken bir hata oluştu.',
+          ),
         ),
       );
     }
@@ -192,7 +201,9 @@ class AuthRepository {
         },
       );
 
-      final data = ChangePasswordResponseModel.fromJson(response.data);
+      final data = ChangePasswordResponseModel.fromJson(
+        requireJsonMap(response.data),
+      );
       if (data.kod == 0) {
         return const Right("Kullanıcı oluşturma kodu telefonunuza gönderildi");
       } else {
@@ -203,7 +214,10 @@ class AuthRepository {
     } on DioException catch (err) {
       return Left(
         ServerException(
-          err.response!.data.toString(),
+          parseApiErrorMessage(
+            err,
+            fallback: 'Kullanıcı oluşturma kodu gönderilemedi.',
+          ),
         ),
       );
     }
@@ -218,7 +232,9 @@ class AuthRepository {
           "ONAY_KODU": code,
         },
       );
-      final data = ChangePasswordResponseModel.fromJson(response.data);
+      final data = ChangePasswordResponseModel.fromJson(
+        requireJsonMap(response.data),
+      );
       if (data.kod == 0) {
         return const Right(
           'Kullanıcı oluşturma talebiniz ilgili birime iletilmiştir.',
@@ -231,7 +247,10 @@ class AuthRepository {
     } on DioException catch (err) {
       return Left(
         ServerException(
-          err.response!.data.toString(),
+          parseApiErrorMessage(
+            err,
+            fallback: 'Kullanıcı oluşturma talebi iletilirken hata oluştu.',
+          ),
         ),
       );
     }

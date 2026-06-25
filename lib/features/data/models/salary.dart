@@ -72,9 +72,12 @@ class Salary {
 
   final _format = NumberFormat("#,##0.00", "en_US");
 
-  String get formattedNetSalary => _format.format(netSalary?.toDouble().round());
+  String? get formattedNetSalary =>
+      netSalary != null ? _format.format(netSalary!.toDouble()) : null;
 
-  String get formattedGrossSalary => _format.format(grossSalary?.toDouble().round());
+  String? get formattedGrossSalary =>
+      grossSalary != null ? _format.format(grossSalary!.toDouble()) : null;
 
-  String get formattedSalaryCuts => _format.format(salaryCuts?.toDouble().round());
+  String? get formattedSalaryCuts =>
+      salaryCuts != null ? _format.format(salaryCuts!.toDouble()) : null;
 }

@@ -21,7 +21,7 @@ class _MissionScreenState extends State<MissionScreen> {
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..loadRequest(
-          Uri.parse("https://www.karabaglar.bel.tr/sayfa/vizyon-ve-misyon"));
+          Uri.parse("https://tokat.bel.tr/stratejik-planlar"));
   }
 
   @override

@@ -47,8 +47,14 @@ class _SalaryScreenState extends State<SalaryScreen> {
                   message: state.statusMessage,
                 );
               case SalaryStatus.success:
+                final latestSalary = state.salaries?.isNotEmpty == true
+                    ? state.salaries!.first
+                    : null;
                 return SalarySuccessBody(
                   salaries: state.salaries,
+                  grossSalary: latestSalary?.formattedGrossSalary,
+                  netSalary: latestSalary?.formattedNetSalary,
+                  salaryCuts: latestSalary?.formattedSalaryCuts,
                 );
             }
           },
@@ -86,15 +92,15 @@ class SalarySuccessBody extends StatelessWidget {
               children: [
                 RedContainer(
                   title: AppStrings.grossSalary,
-                  info: '$grossSalary TL',
+                  info: '${grossSalary ?? '-'} TL',
                 ),
                 RedContainer(
                   title: AppStrings.netSalary,
-                  info: '$netSalary TL',
+                  info: '${netSalary ?? '-'} TL',
                 ),
                 RedContainer(
                   title: AppStrings.salaryCuts,
-                  info: '$salaryCuts TL',
+                  info: '${salaryCuts ?? '-'} TL',
                 ),
               ],
             ),
@@ -131,7 +137,7 @@ class SalaryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InfoCardTemplate(
       title: '${salary.month.toString()} - ${salary.payrollYear} / ${salary.payrollType}',
-      subtitle: '${AppStrings.amount} : ${salary.formattedNetSalary} TL',
+      subtitle: '${AppStrings.amount} : ${salary.formattedNetSalary ?? '-'} TL',
       trailing: Container(
         padding: AppDimensions.pd16,
         decoration: BoxDecoration(

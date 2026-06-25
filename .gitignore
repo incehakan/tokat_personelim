@@ -64,7 +64,14 @@ linked_*.ds
 unlinked.ds
 unlinked_spec.ds
 
-# Android related
+# Release binaries (derleme çıktıları, kaynak kod değil)
+release/*.apk
+release/*.aab
+release/*.rar
+
+# Android native build cache
+android/app/.cxx/
+
 **/android/**/gradle-wrapper.jar
 .gradle/
 **/android/captures/

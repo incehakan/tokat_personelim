@@ -18,7 +18,7 @@ class _CorporateMailScreenState extends State<CorporateMailScreen> {
     super.initState();
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..loadRequest(Uri.parse("https://mail.karabaglar.bel.tr/"));
+      ..loadRequest(Uri.parse("https://mail.tokat.bel.tr/"));
   }
 
   @override

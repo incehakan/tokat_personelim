@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:karabaglarpersonelim/features/data/models/notification.dart';
+import 'package:tokatpersonelim/features/data/models/notification.dart';
 
 import '../../../../../product/constants/app_dimensions.dart';
 import '../../widgets/app_button.dart';

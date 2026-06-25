@@ -1,0 +1,65 @@
+Tokat Personelim v1.3.4 — App Store Yükleme Kılavuzu
+=====================================================
+
+ÖN KOŞULLAR
+-----------
+- macOS bilgisayar + Xcode (en güncel kararlı sürüm)
+- Apple Developer Program üyeliği (kurumsal hesap önerilir)
+- App Store Connect erişimi
+- Bundle ID: com.tokat.tokatpersonelim
+
+1. APP STORE CONNECT'TE UYGULAMA OLUŞTURMA
+   https://appstoreconnect.apple.com
+
+   - My Apps → + → New App
+   - Platform: iOS
+   - Name: Tokat Personelim
+   - Primary Language: Turkish
+   - Bundle ID: com.tokat.tokatpersonelim
+   - SKU: tokat-personelim (veya kurum içi kod)
+
+2. SERTİFİKA VE İMZALAMA (Xcode)
+   - Xcode'da ios/Runner.xcworkspace dosyasını açın
+   - Runner → Signing & Capabilities
+   - Team: M87N3BV27M (Tokat Belediyesi hesabı)
+   - Automatically manage signing: Açık
+   - Push Notifications capability ekli olmalı
+
+3. IPA DERLEME (Mac terminal)
+   ./scripts/build_release_ios.sh
+
+   Çıktı:
+   release/TokatPersonelim-v1.3.4-appstore.ipa
+
+   Alternatif (Xcode GUI):
+   - Product → Archive
+   - Distribute App → App Store Connect → Upload
+
+4. TRANSPORTER İLE YÜKLEME
+   - Mac App Store'dan "Transporter" uygulamasını indirin
+   - IPA dosyasını sürükleyip bırakın
+   - Yükleme tamamlanınca App Store Connect'te işlenmesini bekleyin (5–30 dk)
+
+5. APP STORE CONNECT AYARLARI
+   - App Information: kategori, yaş derecelendirmesi
+   - Pricing: Free (kurum içi uygulama)
+   - App Privacy: veri toplama beyanı (konum, kimlik, iletişim vb.)
+   - Screenshots: iPhone 6.7" ve 6.5" (min. 3 adet önerilir)
+   - Description / Keywords (Türkçe)
+   - Support URL ve Privacy Policy URL (zorunlu)
+   - Build seçimi: yüklenen 1.3.4 (5) build'i seçin
+   - Export Compliance: şifreleme kullanımı (genelde "Hayır" veya standart HTTPS)
+
+6. FIREBASE (iOS) — ÖNEMLİ
+   Mevcut GoogleService-Info.plist içindeki Bundle ID eski olabilir.
+   Firebase Console'da com.tokat.tokatpersonelim için iOS uygulaması
+   oluşturup yeni GoogleService-Info.plist indirin ve ios/Runner/ altına koyun.
+
+7. TEST SIRASI
+   TestFlight (Dahili) → TestFlight (Harici/Kapalı) → App Store İncelemesi
+
+8. İNCELEME NOTU (Review Notes)
+   Kurum personeline yönelik uygulama olduğunu, test hesabı
+   bilgilerini (kullanıcı adı / şifre) buraya yazın.
+
+Detaylı rehber: docs/APP_STORE_YAYINLAMA.md

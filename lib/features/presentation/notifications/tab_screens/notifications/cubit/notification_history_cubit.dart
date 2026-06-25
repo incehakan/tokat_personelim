@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:karabaglarpersonelim/features/data/models/notification.dart';
+import 'package:tokatpersonelim/features/data/models/notification.dart';
 
 import '../../../../../data/models/birthday_celebration_model.dart';
 import '../../../../../data/repository/notification_repository.dart';

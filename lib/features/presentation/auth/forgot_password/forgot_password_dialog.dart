@@ -41,20 +41,18 @@ class ForgotPasswordDialog extends StatelessWidget {
       actions: [
         AppButton(
           text: 'Sms Gönder',
-          onPressed: () {
+          onPressed: () async {
             showLoadingIndicator(context);
-            getIt
-                .get<AuthRepository>()
-                .forgotPasswordCode(
-                  usernameController.text,
-                  identityController.text,
-                )
-                .then(
-              (value) {
-                value.fold((l) {
-                  context.pop();
-                  showErrorMessage(l.message);
-                }, (r) {
+            try {
+              final value = await getIt.get<AuthRepository>().forgotPasswordCode(
+                    usernameController.text,
+                    identityController.text,
+                  );
+              if (!context.mounted) return;
+              context.pop();
+              value.fold(
+                (l) => showErrorMessage(l.message),
+                (r) {
                   context.pop();
                   context.pushNamed(
                     AppRoutes.changePassword,
@@ -63,9 +61,16 @@ class ForgotPasswordDialog extends StatelessWidget {
                       usernameController.text,
                     ],
                   );
-                });
-              },
-            );
+                },
+              );
+            } catch (_) {
+              if (context.mounted) {
+                context.pop();
+                showErrorMessage(
+                  'Bir hata oluştu. Lütfen daha sonra tekrar deneyiniz.',
+                );
+              }
+            }
           },
         )
       ],

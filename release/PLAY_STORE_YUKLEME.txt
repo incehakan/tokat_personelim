@@ -1,0 +1,36 @@
+Tokat Personelim v1.3.4 — Google Play Yükleme Kılavuzu
+========================================================
+
+1. PLAY CONSOLE'A GİRİŞ
+   https://play.google.com/console
+
+2. UYGULAMA SEÇİMİ / OLUŞTURMA
+   - Paket adı: com.tokat.tokatpersonelim
+   - Uygulama adı: Tokat Personelim
+
+3. YENİ SÜRÜM YÜKLEME
+   - Sol menü: Test edin ve yayınlayın → Üretim (veya Dahili test)
+   - "Yeni sürüm oluştur" → AAB dosyasını yükleyin:
+     release/TokatPersonelim-v1.3.4-playstore.aab
+
+4. SÜRÜM NOTLARI (Türkçe)
+   - Şifremi unuttum akışı düzeltildi
+   - Şifre sıfırlama sunucu adresi güncellendi
+   - Ağ hata mesajları iyileştirildi
+
+5. ZORUNLU MAĞAZA BİLGİLERİ (ilk yayında)
+   - Gizlilik politikası URL'si (zorunlu)
+   - Uygulama ikonu 512×512
+   - En az 2 telefon ekran görüntüsü
+   - Veri güvenliği formu
+   - İçerik derecelendirmesi anketi
+
+6. FIREBASE / GOOGLE MAPS
+   - SHA parmak izleri: release/SHA_FINGERPRINTS.txt
+   - Firebase Console → Proje ayarları → Android uygulamasına ekleyin
+   - Play App Signing etkinse Play Console'daki imza SHA'larını da ekleyin
+
+7. TEST SIRASI (önerilen)
+   Dahili test → Kapalı test → Üretim
+
+Detaylı rehber: docs/GOOGLE_PLAY_YAYINLAMA.md

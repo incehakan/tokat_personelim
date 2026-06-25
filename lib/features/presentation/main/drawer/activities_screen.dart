@@ -16,7 +16,7 @@ class _ActivitiesScreenState extends State<ActivitiesScreen> {
     super.initState();
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..loadRequest(Uri.parse("https://www.karabaglar.bel.tr/sayfa/raporlar"));
+      ..loadRequest(Uri.parse("https://www.tokat.bel.tr/sayfa/raporlar"));
   }
 
   @override

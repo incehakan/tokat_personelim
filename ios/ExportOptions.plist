@@ -6,11 +6,9 @@
 	<string>app-store</string>
 	<key>uploadSymbols</key>
 	<true/>
-	<key>destination</key>
-	<string>upload</string>
 	<key>signingStyle</key>
-	<string>automatic</string>
+	<string>manual</string>
 	<key>teamID</key>
-	<string>M87N3BV27M</string>
+	<string>J9HVW3A28A</string>
 </dict>
 </plist>

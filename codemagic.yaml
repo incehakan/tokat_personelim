@@ -5,24 +5,20 @@ workflows:
     name: Tokat Personelim iOS (Imzasiz)
     max_build_duration: 90
     instance_type: mac_mini_m2
-
     environment:
       flutter: stable
       xcode: latest
       cocoapods: default
       vars:
         BUNDLE_ID: com.tokat.tokatpersonelim
-
     scripts:
       - name: Flutter paketleri
         script: flutter pub get
-
       - name: CocoaPods
         script: |
           cd ios
           pod install
           cd ..
-
       - name: Imzasiz iOS derle
         script: |
           VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}')
@@ -31,7 +27,6 @@ workflows:
           flutter build ios --release --no-codesign \
             --build-name="$VERSION_NAME" \
             --build-number="$VERSION_CODE"
-
       - name: Imzasiz IPA paketle
         script: |
           VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}')
@@ -41,10 +36,8 @@ workflows:
           zip -qr "release/TokatPersonelim-v${VERSION_NAME}-unsigned.ipa" Payload
           rm -rf Payload
           echo "Imzasiz IPA: release/TokatPersonelim-v${VERSION_NAME}-unsigned.ipa"
-
     artifacts:
       - release/*-unsigned.ipa
-
     publishing:
       email:
         recipients:
@@ -52,12 +45,10 @@ workflows:
         notify:
           success: true
           failure: true
-
   tokat-personelim-ios:
     name: Tokat Personelim iOS
     max_build_duration: 90
     instance_type: mac_mini_m2
-
     environment:
       flutter: stable
       xcode: latest
@@ -70,24 +61,23 @@ workflows:
       ios_signing:
         distribution_type: app_store
         bundle_identifier: com.tokat.tokatpersonelim
-
     triggering:
       events:
         - push
       branch_patterns:
         - pattern: main
           include: true
-
     scripts:
       - name: Flutter paketleri
         script: flutter pub get
-
       - name: CocoaPods
         script: |
           cd ios
           pod install
           cd ..
-
+      - name: Xcode projesine imzalama ayarlarini uygula
+        script: |
+          xcode-project use-profiles
       - name: IPA derle
         script: |
           VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}')
@@ -98,7 +88,6 @@ workflows:
             --build-name="$VERSION_NAME" \
             --build-number="$VERSION_CODE" \
             --export-options-plist=ios/ExportOptions.plist
-
       - name: release klasorune kopyala
         script: |
           VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}')
@@ -107,11 +96,9 @@ workflows:
           IPA=$(find build/ios/ipa -name "*.ipa" | head -n 1)
           cp "$IPA" "release/TokatPersonelim-v${VERSION_NAME}-appstore.ipa"
           echo "IPA: release/TokatPersonelim-v${VERSION_NAME}-appstore.ipa"
-
     artifacts:
       - build/ios/ipa/*.ipa
       - release/*.ipa
-
     publishing:
       email:
         recipients:

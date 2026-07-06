@@ -10,5 +10,10 @@
 	<string>manual</string>
 	<key>teamID</key>
 	<string>J9HVW3A28A</string>
+	<key>provisioningProfiles</key>
+	<dict>
+		<key>com.tokat.tokatpersonelim</key>
+		<string>TokatPersonelim</string>
+	</dict>
 </dict>
 </plist>

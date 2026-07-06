@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>method</key>
-	<string>ad-hoc</string>
+	<string>app-store</string>
 	<key>uploadSymbols</key>
 	<true/>
 	<key>signingStyle</key>
@@ -13,7 +13,7 @@
 	<key>provisioningProfiles</key>
 	<dict>
 		<key>com.tokat.tokatpersonelim</key>
-		<string>TokatPersonelim_AdHoc_Final</string>
+		<string>TokatPersonelimAppStoreNew</string>
 	</dict>
 </dict>
 </plist>

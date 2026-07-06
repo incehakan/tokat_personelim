@@ -49,15 +49,14 @@ workflows:
     name: Tokat Personelim iOS
     max_build_duration: 90
     instance_type: mac_mini_m2
+    integrations:
+      app_store_connect: "Innosa Mobil"
     environment:
       flutter: 3.41.0
       xcode: latest
       cocoapods: default
       vars:
         BUNDLE_ID: com.tokat.tokatpersonelim
-      # Codemagic web arayuzunde ayarlanacak:
-      # Team settings -> Developer Portal -> App Store Connect API key
-      # veya Code signing identities -> iOS certificates + provisioning profiles
       ios_signing:
         distribution_type: app_store
         bundle_identifier: com.tokat.tokatpersonelim

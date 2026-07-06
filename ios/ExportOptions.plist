@@ -13,7 +13,7 @@
 	<key>provisioningProfiles</key>
 	<dict>
 		<key>com.tokat.tokatpersonelim</key>
-		<string>TokatPersonelimAppStoreNew</string>
+		<string>TokatPersonelim_AppStore_TestFlight</string>
 	</dict>
 </dict>
 </plist>
